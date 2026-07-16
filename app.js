@@ -1,13 +1,15 @@
 require("dotenv").config();
 const PORT=process.env.PORT ||8000;
 const express=require("express");
+const cors = require("cors");
 const authRoutes=require("./routes/authRoutes.js");
 const projectRoutes=require("./routes/projectRoutes.js")
 const loggerMiddleware=require("./middleware/loggermiddleware.js");
-const errorHandler=require("./middleware/errorHandler.js")
+const errorHandler=require("./middleware/errorHandler.js");
 
 const app=express();
 
+app.use(cors());
 app.use(express.json());
 app.use(loggerMiddleware);
 app.use(authRoutes);

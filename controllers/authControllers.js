@@ -35,28 +35,32 @@ const login=async(req,res,next)=>{
         next(error);
       }
      };
-const profile=async(req,res,next)=>{
-   const user = await prisma.user.findUnique({
-            where: {
-                id: req.userId,
-            },
-            select: {
-                id: true,
-                username: true,
-                name: true,
-                email: true,
-                createdAt: true,
-            },
-        });
+const profile = async (req, res, next) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.userId,
+      },
+      select: {
+        id: true,
+        username: true,
+        name: true,
+        email: true,
+        createdAt: true,
+      },
+    });
 
-    console.log(req.userId);
-    res.json({
-        id:user.id,
-        username:user.username,
-        name:user.name,
-        email:user.email,
-    })
-}
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    return res.status(200).json({
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 const bcrypt=require("bcrypt");
 const prisma=require("../config/prisma");
 
