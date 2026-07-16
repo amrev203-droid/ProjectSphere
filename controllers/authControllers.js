@@ -36,11 +36,18 @@ const login=async(req,res,next)=>{
       }
      };
 const profile=async(req,res,next)=>{
-    const user =await prisma.user.findUnique({
-        where:{
-            id:req.userId,
-        },
-    });
+   const user = await prisma.user.findUnique({
+            where: {
+                id: req.userId,
+            },
+            select: {
+                id: true,
+                username: true,
+                name: true,
+                email: true,
+                createdAt: true,
+            },
+        });
 
     console.log(req.userId);
     res.json({
